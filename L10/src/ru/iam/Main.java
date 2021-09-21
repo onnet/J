@@ -1,20 +1,44 @@
 package ru.iam;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+        // write your code here
         //1.
-        System.out.println("1. Написать метод, который на входе получает коллекцию объектов, а возвращает коллекцию уже без дубликатов");
-        List<String> strings = List.of("first", "second", "third","first", "second");
-        System.out.println(setFilter(strings));
+//        System.out.println("1. Написать метод, который на входе получает коллекцию объектов, а возвращает коллекцию уже без дубликатов");
+//        List<String> strings = List.of("first", "second", "third", "first", "second");
+//        System.out.println(setFilter(strings));
 
         //2.
-        System.out.println("2. Сравнение ArrayList и LinkedList.\n");
-        ListTypesCompare();
+//        System.out.println("2. Сравнение ArrayList и LinkedList.\n");
+//        ListTypesCompare();
 
+        //3.
+        Map<User, Integer> myUsersMap = Map.of(
+                new User("Ivan"), 5,
+                new User("Petr"), 4,
+                new User("Vasiliy"), 3,
+                new User("Luka"), 4
+        );
+        System.out.print("Input name: ");
+        Scanner console = new Scanner(System.in);
+        String username = console.nextLine();
+        Optional SearchResult = myUsersMap.entrySet()
+                .stream()
+                .filter(entry -> Objects.equals(entry.getKey().getName(), username))
+                .map(Map.Entry::getValue)
+                .findFirst();
+
+        if (SearchResult.isPresent()) {
+            System.out.println("\nUser " + username + " score is " + SearchResult.get().toString());
+        } else {
+            System.out.println("\nSorry, no user found");
+        }
+
+        
     }
 
     static Set<String> setFilter(List<String> str) {
@@ -26,6 +50,7 @@ public class Main {
     private static int random() {
         return new Random().nextInt(1000000);
     }
+
     public static void ListTypesCompare() {
         int tmp;
         long start_ms;
@@ -39,7 +64,7 @@ public class Main {
         }
 
         start_ms = System.nanoTime();
-                for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 100000; i++) {
             arrayList.get((random()));
         }
         System.out.println("ArrayList operations duration: " + (System.nanoTime() - start_ms) / 1000000);
@@ -51,16 +76,21 @@ public class Main {
         System.out.println("LinkedList operations duration: " + (System.nanoTime() - start_ms) / 1000000);
 
     }
-class User {
-    public String getName() {
-        return name;
+
+    static class User {
+        User(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        private String name;
+
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    private String name;
-
-}
 }
