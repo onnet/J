@@ -8,22 +8,23 @@ public class Main {
     public static void main(String[] args) {
         // write your code here
         //1.
-//        System.out.println("1. Написать метод, который на входе получает коллекцию объектов, а возвращает коллекцию уже без дубликатов");
-//        List<String> strings = List.of("first", "second", "third", "first", "second");
-//        System.out.println(setFilter(strings));
+        System.out.println("1. Написать метод, который на входе получает коллекцию объектов, а возвращает коллекцию уже без дубликатов");
+        List<String> strings = List.of("first", "second", "third", "first", "second");
+        System.out.println(setFilter(strings));
 
         //2.
-//        System.out.println("2. Сравнение ArrayList и LinkedList.\n");
-//        ListTypesCompare();
+        System.out.println("2. Сравнение ArrayList и LinkedList.\n");
+        ListTypesCompare();
 
         //3.
+        System.out.println("3. Создайте Map (Map<User, Integer>).\n");
         Map<User, Integer> myUsersMap = Map.of(
                 new User("Ivan"), 5,
                 new User("Petr"), 4,
                 new User("Vasiliy"), 3,
                 new User("Luka"), 4
         );
-        System.out.print("Input name: ");
+        System.out.print("Input name (ex. Ivan): ");
         Scanner console = new Scanner(System.in);
         String username = console.nextLine();
         Optional SearchResult = myUsersMap.entrySet()
@@ -38,7 +39,11 @@ public class Main {
             System.out.println("\nSorry, no user found");
         }
 
-        
+        //4.
+        System.out.println("\n4. Вернуть нужно объект Map<K, Integer>.\n");
+        String array[] = { "Пиво", "Вино", "Водка", "Водка", "Водка", "Газировка", "Газировка" };
+        Map<String, Long> mymap = convertArrayToMap(array);
+        System.out.println("MyMap: " + mymap);
     }
 
     static Set<String> setFilter(List<String> str) {
@@ -92,5 +97,22 @@ public class Main {
 
         private String name;
 
+    }
+
+    public static <T> Map<T,Long> convertArrayToMap(T array[])
+    {
+        Set<T> set = new HashSet<>();
+        Collections.addAll(set, array);
+
+        Map<T,Long> map = set.stream()
+//       Map<T,T> map = Set.of(array).stream()
+                .collect(
+//          Collectors.toMap(x -> x, x -> x, (oldValue, newValue) -> newvalue)
+                        Collectors.toMap(x -> x, x ->
+                                Arrays.stream(array).filter(i -> i == x).count()
+                        )
+                );
+
+        return map;
     }
 }
