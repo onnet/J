@@ -10,9 +10,12 @@ public class Main {
     private static final Map<String, String> getenv = System.getenv();
 
     public static void main(String[] args) {
+        System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "Debug");
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot(new Bot(getenv.get("BOT_NAME"), getenv.get("BOT_TOKEN")));
+            System.out.println("BOT_NAME: " + System.getenv("BOT_NAME"));
+            System.out.println("BOT_TOKEN: " + System.getenv("BOT_TOKEN"));
+            botsApi.registerBot(new Bot(System.getenv("BOT_NAME"), System.getenv("BOT_TOKEN")));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
