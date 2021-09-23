@@ -23,7 +23,7 @@
     <orderEntry type="library" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-commons:1.7.1" level="project" />
     <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-suite-api:1.7.1" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:${jackson.version}" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.5" level="project" />
     <orderEntry type="library" name="Maven: org.telegram:telegrambots:5.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.11.3" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:2.11.3" level="project" />
