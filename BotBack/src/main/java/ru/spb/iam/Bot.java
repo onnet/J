@@ -33,6 +33,10 @@ public final class Bot extends TelegramLongPollingCommandBot {
 
         register(new HelpCommand("help","Помощь"));
         logger.debug("Команда help создана");
+        register(new SubscribeCommand("subscribe","Помощь"));
+        logger.debug("Команда subscribe создана");
+        register(new UnSubscribeCommand("unsubscribe","Помощь"));
+        logger.debug("Команда unsubscribe создана");
 
         logger.info("Бот создан!");
     }
@@ -54,7 +58,7 @@ public final class Bot extends TelegramLongPollingCommandBot {
         Long chatId = msg.getChatId();
         String userName = Utils.getUserName(msg);
 
-        String answer = nonCommand.nonCommandExecute(chatId, userName, msg.getText());
+        String answer = nonCommand.nonCommandExecute(update);
         setAnswer(chatId, userName, answer);
     }
 
