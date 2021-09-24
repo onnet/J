@@ -8,9 +8,11 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 
 public class UnSubscribeCommand extends ServiceCommand {
     private Logger logger = LoggerFactory.getLogger(HelpCommand.class);
+    private javax.sql.DataSource myDS;
 
-    public UnSubscribeCommand(String identifier, String description) {
+    public UnSubscribeCommand(String identifier, String description, javax.sql.DataSource myDS) {
         super(identifier, description);
+        this.myDS = myDS;
     }
 
     @Override
