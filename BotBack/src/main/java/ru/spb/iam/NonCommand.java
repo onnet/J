@@ -29,7 +29,7 @@ public class NonCommand {
                 userName, String.valueOf(msg)));
 
         if (msg.hasLocation()) {
-
+            logger.debug(String.format("Пользователь %s. Запрос погоды по местоположению: \"%s\"", userName, String.valueOf(msg.getLocation())));
             answer = String.valueOf(getWeatherByLL(msg.getLocation().getLatitude(), msg.getLocation().getLongitude()));
 
             return answer;
