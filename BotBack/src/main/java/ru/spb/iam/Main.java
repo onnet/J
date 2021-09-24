@@ -4,6 +4,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+import java.sql.SQLException;
 import java.util.Map;
 
 public class Main {
@@ -18,7 +19,7 @@ public class Main {
             System.out.println("BOT_NAME: " + System.getenv("BOT_NAME"));
             System.out.println("BOT_TOKEN: " + System.getenv("BOT_TOKEN"));
             botsApi.registerBot(new Bot(System.getenv("BOT_NAME"), System.getenv("BOT_TOKEN")));
-        } catch (TelegramApiException e) {
+        } catch (TelegramApiException | SQLException e) {
             e.printStackTrace();
         }
     }

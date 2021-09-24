@@ -1,20 +1,30 @@
 package ru.spb.iam;
 
-        import lombok.Getter;
-        import org.slf4j.Logger;
-        import org.slf4j.LoggerFactory;
-        import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
-        import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-        import org.telegram.telegrambots.meta.api.objects.Message;
-        import org.telegram.telegrambots.meta.api.objects.Update;
-        import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-        import java.util.HashMap;
-        import java.util.Map;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class Bot extends TelegramLongPollingCommandBot {
     private Logger logger = LoggerFactory.getLogger(Bot.class);
-    javax.sql.DataSource myDS = createDataSource ();
+    javax.sql.DataSource myDS = createDataSource();
+
+    ConnectionPool connectionPool =
+            BasicConnectionPool.create(
+                    System.getenv("BOT_DB_URL"),
+                    System.getenv("BOT_DB_USERNAME"),
+                    System.getenv("BOT_DB_PWD"));
+
+    Connection conn = connectionPool.getConnection();
 
     private final String BOT_NAME;
     private final String BOT_TOKEN;
@@ -22,7 +32,7 @@ public final class Bot extends TelegramLongPollingCommandBot {
     @Getter
     private final NonCommand nonCommand;
 
-    public Bot(String botName, String botToken) {
+    public Bot(String botName, String botToken) throws SQLException {
         super();
         logger.debug("Конструктор суперкласса отработал");
         this.BOT_NAME = botName;
@@ -32,11 +42,11 @@ public final class Bot extends TelegramLongPollingCommandBot {
         this.nonCommand = new NonCommand();
         logger.debug("Класс обработки сообщения, не являющегося командой, создан");
 
-        register(new HelpCommand("help","Помощь"));
+        register(new HelpCommand("help", "Помощь"));
         logger.debug("Команда help создана");
-        register(new SubscribeCommand("subscribe","Подписаться", myDS));
+        register(new SubscribeCommand("subscribe", "Подписаться", connectionPool));
         logger.debug("Команда subscribe создана");
-        register(new UnSubscribeCommand("unsubscribe","Отменить подписку", myDS));
+        register(new UnSubscribeCommand("unsubscribe", "Отменить подписку", connectionPool));
         logger.debug("Команда unsubscribe создана");
 
         logger.info("Бот создан!");
@@ -76,8 +86,7 @@ public final class Bot extends TelegramLongPollingCommandBot {
         }
     }
 
-    private static javax.sql.DataSource createDataSource()
-    {
+    private static javax.sql.DataSource createDataSource() {
         /* use a data source with connection pooling */
         org.postgresql.ds.PGPoolingDataSource ds = new org.postgresql.ds.PGPoolingDataSource();
         ds.setUrl(System.getenv("BOT_DB_URL"));

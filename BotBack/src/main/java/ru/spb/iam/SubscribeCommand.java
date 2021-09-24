@@ -7,16 +7,17 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class SubscribeCommand extends ServiceCommand {
     private Logger logger = LoggerFactory.getLogger(HelpCommand.class);
-    private javax.sql.DataSource myDS;
+    ConnectionPool connectionPool;
 
-    public SubscribeCommand(String identifier, String description, javax.sql.DataSource myDS) {
+    public SubscribeCommand(String identifier, String description, ConnectionPool connectionPool) {
         super(identifier, description);
-        this.myDS = myDS;
+        this.connectionPool = connectionPool;
     }
 
     @SneakyThrows
@@ -30,7 +31,7 @@ public class SubscribeCommand extends ServiceCommand {
                 "\uD83D\uDC49 Тут мы подписываемся\n\n" +
                         "Желаю удачи\uD83D\uDE42");
 
-        java.sql.Connection conn = myDS.getConnection();
+        Connection conn = connectionPool.getConnection();
         Statement stmt = conn.createStatement();
         String sql = "SELECT * FROM subscribers";
         ResultSet rs = stmt.executeQuery(sql);
