@@ -26,7 +26,7 @@ public class HelpCommand extends ServiceCommand {
                         "/subscribe - подписаться на рассылку\n" +
                         "/unsubscribe - отписаться от рассылки\n" +
                         "/help - эта страница\n\n" +
-                        "Желаю удачи\uD83D\uDE42"
+                        "Желаю удачи \uD83D\uDE42"
         );
         logger.debug(String.format("Пользователь %s. Завершено выполнение команды %s", userName, this.getCommandIdentifier()));
     }
