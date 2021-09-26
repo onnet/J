@@ -9,12 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.spb.iam.db.ConnectionPool;
 
 import java.sql.SQLException;
 
-import static ru.spb.iam.db.Utils.addLocation;
-import static ru.spb.iam.db.Utils.maybeLLExists;
+import static ru.spb.iam.db.Utils.*;
 
 
 public class NonCommand {
@@ -28,21 +26,17 @@ public class NonCommand {
         String answer = "Не знаю что ответить на это. Обратитесь к Алисе.. \uD83D\uDE25";
 
         logger.debug(String.format("Пользователь %s. Начата обработка сообщения \"%s\", не являющегося командой",
-                userName, String.valueOf(msg)));
+                userName, msg));
 
         if (msg.hasLocation()) {
-            logger.debug(String.format("Пользователь %s. Запрос погоды по местоположению: \"%s\"", userName, String.valueOf(msg.getLocation())));
-            maybeLLExists(msg.getFrom().getId());
-            addLocation(msg);
+            logger.debug(String.format("Пользователь %s. Запрос погоды по местоположению: \"%s\"", userName, msg.getLocation()));
+            if (maybeUserExists(msg.getFrom().getId())) addLocation(msg.getFrom().getId(), msg.getLocation().getLatitude(), msg.getLocation().getLongitude());
             answer = String.valueOf(getWeatherByLL(msg.getLocation().getLatitude(), msg.getLocation().getLongitude()));
-
-            return answer;
-        } else {
-
-            logger.debug(String.format("Пользователь %s. Завершена обработка сообщения \"%s\", не являющегося командой",
-                    userName, String.valueOf(msg)));
-            return answer;
         }
+        logger.debug(String.format("Пользователь %s. Завершена обработка сообщения \"%s\", не являющегося командой",
+                userName, msg));
+
+        return answer;
     }
 
     private Weather getWeatherByLL(Double latitude, Double longitude) {
@@ -58,8 +52,8 @@ public class NonCommand {
                 .retrieve()
                 .asJava();
 
-        logger.debug(String.format("Погода в по координатам: \"%s\"", String.valueOf(weather)));
-        logger.debug(String.format("Координаты: \"%s\"", String.valueOf(Coordinate.of(53.54, 27.34))));
+        logger.debug(String.format("Погода в по координатам: \"%s\"", weather));
+        logger.debug(String.format("Координаты: \"%s\"", Coordinate.of(53.54, 27.34)));
 
         return weather;
 
