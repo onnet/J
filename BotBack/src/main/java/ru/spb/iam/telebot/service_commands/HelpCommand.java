@@ -21,8 +21,13 @@ public class HelpCommand extends ServiceCommand {
         logger.debug(String.format("Пользователь %s. Начато выполнение команды %s", userName, this.getCommandIdentifier()));
         System.out.println(String.format("Пользователь %s. Начато выполнение команды %s", userName, this.getCommandIdentifier()));
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                "\uD83D\uDC49 Тут должен быть ответ на хелп\n\n" +
-                        "Желаю удачи\uD83D\uDE42");
+                "❗ *Список команд* " +
+                        " \uD83D\uDC49 \n\n" +
+                        "/subscribe - подписаться на рассылку\n" +
+                        "/unsubscribe - отписаться от рассылки\n" +
+                        "/help - эта страница\n\n" +
+                        "Желаю удачи\uD83D\uDE42"
+        );
         logger.debug(String.format("Пользователь %s. Завершено выполнение команды %s", userName, this.getCommandIdentifier()));
     }
 }
