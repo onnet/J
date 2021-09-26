@@ -1,4 +1,4 @@
-package ru.spb.iam;
+package ru.spb.iam.telebot;
 
 import com.github.prominence.openweathermap.api.OpenWeatherMapClient;
 import com.github.prominence.openweathermap.api.enums.Language;
@@ -7,18 +7,20 @@ import com.github.prominence.openweathermap.api.model.Coordinate;
 import com.github.prominence.openweathermap.api.model.weather.Weather;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.spb.iam.db.ConnectionPool;
 
-import java.util.List;
+import java.sql.SQLException;
+
+import static ru.spb.iam.db.Utils.addLocation;
+import static ru.spb.iam.db.Utils.maybeLLExists;
 
 
 public class NonCommand {
     private Logger logger = LoggerFactory.getLogger(NonCommand.class);
 
-    public String nonCommandExecute(Update update) {
+    public String nonCommandExecute(Update update) throws SQLException {
         Message msg = update.getMessage();
         logger.debug(String.valueOf(update));
         Long chatId = msg.getChatId();
@@ -30,6 +32,8 @@ public class NonCommand {
 
         if (msg.hasLocation()) {
             logger.debug(String.format("Пользователь %s. Запрос погоды по местоположению: \"%s\"", userName, String.valueOf(msg.getLocation())));
+            maybeLLExists(msg.getFrom().getId());
+            addLocation(msg);
             answer = String.valueOf(getWeatherByLL(msg.getLocation().getLatitude(), msg.getLocation().getLongitude()));
 
             return answer;

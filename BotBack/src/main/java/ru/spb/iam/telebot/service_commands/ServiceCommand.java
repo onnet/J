@@ -1,4 +1,4 @@
-package ru.spb.iam;
+package ru.spb.iam.telebot.service_commands;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

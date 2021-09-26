@@ -1,4 +1,4 @@
-package ru.spb.iam;
+package ru.spb.iam.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

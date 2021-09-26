@@ -3,6 +3,7 @@ package ru.spb.iam;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import ru.spb.iam.telebot.Bot;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
 public class Main {
     private static final Map<String, String> getenv = System.getenv();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "Debug");
 
@@ -24,3 +25,4 @@ public class Main {
         }
     }
 }
+

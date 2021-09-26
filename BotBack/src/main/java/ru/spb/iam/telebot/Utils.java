@@ -1,4 +1,4 @@
-package ru.spb.iam;
+package ru.spb.iam.telebot;
 
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
